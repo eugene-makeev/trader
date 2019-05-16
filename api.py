@@ -83,14 +83,18 @@ def get_rate(market, order_type):
 def create_order(order_type, market, quantity, rate=None):
     method = "/market/" + order_type.lower() + ORDERS_TYPE
     rate = get_rate(market, order_type) if rate == None else rate
-    responce = call_api(method=method, market=market, quantity=quantity, rate=rate)
-    if responce['success']:        
-        print(CGREEN, "\t\t\tsuccessfyly created %s order for %s, rate: %0.8f, quantity %0.8f uuid=%s%s"
-            % (order_type.upper(), market, rate, quantity, responce['result']['uuid'], CEND))
+    if rate * quantity > MIN_TRADE_ALLOWED:
+        responce = call_api(method=method, market=market, quantity=quantity, rate=rate)
+        if responce['success']:        
+            print(CGREEN, "\t\t\tsuccessfyly created %s order for %s, rate: %0.8f, quantity %0.8f uuid=%s%s"
+                % (order_type.upper(), market, rate, quantity, responce['result']['uuid'], CEND))
+        else:
+            print(CRED, "\t\t\tfailed to create %s order for %s: %s%s" % (order_type.upper(), market, responce['message'], CEND))
+        return responce['success']
     else:
-        print(CRED, "\t\t\tfailed to create %s order: %s%s" % (order_type.upper(), responce['message'], CEND))
-    
-    return responce['success']
+        print(CRED, "\t\t\tminimum trade requirement is not meet %s%s" % (market, CEND))
+        return False;
+        
 
 def create_buy(market, quantity=0):
     current_rate = None
