@@ -20,6 +20,8 @@ start = True
 
 while True:
     try:
+        # conditional trading
+        
         # check current orders, if order is not executed in ORDER_LIFE_TIME, adjust price
         if adjust_open_orders(not start):
             time.sleep(1)

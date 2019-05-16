@@ -74,10 +74,12 @@ def get_rate(market, order_type):
 
     if order_type.lower() == 'sell':
         rate = float(ticker_data['result']['Ask'] - adjuster)
+        rate *= DEBUG_PRICE_RATE
     else:
         rate = float(ticker_data['result']['Bid'] + adjuster)
-   
-    return rate * DEBUG_PRICE_RATE
+        rate /= DEBUG_PRICE_RATE
+        
+    return rate
 
 
 def create_order(order_type, market, quantity, rate=None):
@@ -123,10 +125,10 @@ def create_buy(market, quantity=0):
             quantity = int(quantity * adjuster)
             quantity = float(quantity / adjuster)
 
-    if quantity >= MIN_TRADE_ALLOWED:
-        create_order("buy", market=market, quantity=quantity, rate=current_rate)
-    else:
-        print(CRED, '\t\tinsuficient funds to create BUY order, %s available: %0.8f%s' % (base, base_available, CEND))
+    #if quantity >= MIN_TRADE_ALLOWED:
+    create_order("buy", market=market, quantity=quantity, rate=current_rate)
+    #else:
+    #   print(CRED, '\t\tinsuficient funds to create BUY order, %s available: %0.8f%s' % (base, base_available, CEND))
 
 
 def create_sell(market, quantity=0):

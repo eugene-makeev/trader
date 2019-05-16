@@ -19,7 +19,7 @@ def sell_all(sell_btc=False):
     markets = call_api(method='/public/getmarkets')
     if markets['success']:
         for market in markets['result']:
-            pair = market['MarketCurrency'] + '-' +  market['BaseCurrency']
+            pair = market['BaseCurrency'] + '-' + market['MarketCurrency']
             markets_supported.append(pair)
 
     balances = call_api(method='/account/getbalances')
@@ -30,8 +30,10 @@ def sell_all(sell_btc=False):
                     if sell_btc:
                         create_sell('USDT-BTC', balance['Available'])
                 elif balance['Currency'] != 'USDT':
-                    market = 'USDT-' + balance['Currency']
-                    if market not in markets_supported:
+                    if sell_btc:
+                        market = 'USDT-' + balance['Currency']
+                    #if market not in markets_supported:
+                    else:
                         market = 'BTC-' + balance['Currency']
                     create_sell(market, balance['Available'])
 
@@ -62,3 +64,4 @@ if not markets['success']:
     SystemExit()
     
 sell_all()
+print("DONE")
