@@ -15,5 +15,5 @@ if not markets['success']:
     print("Api doesn't work")
     SystemExit()
     
-sell_all(True)
+sell_all()
 print("DONE")
