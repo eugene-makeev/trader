@@ -10,7 +10,8 @@ to_buy = {
           'BCH': 9,
           'ADA': 7000,
           'TRX': 8000,
-          'RDD': 133823
+          'RDD': 133823,
+          'XRP': 1000,
          }
 
 markets_supported = []
