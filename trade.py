@@ -67,7 +67,7 @@ def adjust_open_orders(create_new=True):
     return open_orders
 
 def get_markets_supported():
-    if not markets_supported.__len__():
+    if not len(markets_supported):
         markets = call_api(method='/public/getmarkets')
         if markets['success']:
             for market in markets['result']:
